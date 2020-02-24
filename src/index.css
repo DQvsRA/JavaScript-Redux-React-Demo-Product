@@ -6,3 +6,11 @@ html {
   background-color: #f1f1f1;
   padding-top: 2rem;
 }
+
+.products-product-card {
+  margin-bottom: 1rem;
+}
+
+.product-actions {
+  margin-top: 1rem;
+}

@@ -1,15 +1,21 @@
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
+import React, { Fragment } from 'react'
+import { Button } from 'reactstrap'
+import PropTypes from 'prop-types'
+import {Link} from "react-router-dom"
 
-const Header = ({ name }) => (
-  <Fragment>
-    <h2 className="h3">{name}</h2>
-    <hr/>
-  </Fragment>
-);
+const Header = ({ name, route, navigation }) => {
+    return (
+      <Fragment>
+        <h2 className="h3">{name}</h2>
+        <Link to={route}><Button color="primary">{navigation}</Button></Link>
+        <hr/>
+      </Fragment>
+)}
 
 Header.propTypes = {
+  navigation: PropTypes.string.isRequired,
+  route: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-};
+}
 
-export default Header;
+export default Header

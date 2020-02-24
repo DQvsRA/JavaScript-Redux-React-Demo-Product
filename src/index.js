@@ -1,18 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import reducers from './reducers';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { createStore, applyMiddleware } from 'redux'
+import ReactNotification from 'react-notifications-component'
+import { Provider } from 'react-redux'
+import thunk from 'redux-thunk'
+import { composeWithDevTools } from 'redux-devtools-extension'
 import getRoutes from './routes'
-import './index.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import reducers from "./redux/reducers"
 
-const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk)));
+import './index.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'react-notifications-component/dist/theme.css'
+
+const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk)))
 
 ReactDOM.render(
-  <div className="content">
+  <div>
+    <ReactNotification />
     <div className="container">
       <Provider store={store}>
         {getRoutes()}
@@ -20,4 +24,4 @@ ReactDOM.render(
     </div>
   </div>,
   document.getElementById('root')
-);
+)
