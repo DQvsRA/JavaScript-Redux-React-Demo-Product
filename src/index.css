@@ -2,6 +2,10 @@ html {
   background-color: #f1f1f1;
 }
 
+.page {
+  margin-bottom: 2rem;
+}
+
 .content {
   background-color: #f1f1f1;
   padding-top: 2rem;
