@@ -19,17 +19,16 @@ class ProductsPage extends React.Component {
   }
   
   onBuyProduct() {
-    let newState = {}
     if (this.state.available > 0) {
-      newState = {
+      let newState = {
         oncard: this.state.oncard + 1,
         available: this.state.available - 1
       }
-    } else {
-      newState = { status: "NO PRODUCTS" }
+      if (newState.available === 0)
+        newState.status = "NO PRODUCTS"
+  
+      this.setState(newState)
     }
-    
-    this.setState(newState)
   }
   
   render() {
