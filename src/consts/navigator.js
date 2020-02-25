@@ -1,0 +1,2 @@
+export const NAVIGATE_TO_CARD = "NAVIGATE_TO_CARD"
+export const NAVIGATE_BACK = "NAVIGATE_BACK"

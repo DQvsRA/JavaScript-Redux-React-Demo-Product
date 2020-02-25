@@ -2,30 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {HashRouter, Route, Switch} from "react-router-dom"
+import { ConnectedRouter } from 'connected-react-router'
 import {Provider} from "react-redux"
 import store from "./redux/store"
-import ProductsPage from "./components/ProductsPage"
-import CardPage from "./components/CardPage"
-import AnotherComponent from "./components/AnotherComponent"
+import { history } from "./redux/store"
+import Routes from "./routes"
 
 const App = () => {
   return (
     <div className="content">
       <div className="container">
         <Provider store={store}>
-          <HashRouter>
-            <Switch>
-              <Route exact path="/" render={() =>
-                <React.Fragment>
-                  <ProductsPage/>
-                  <AnotherComponent/>
-                </React.Fragment>
-              }/>
-              <Route path="/card" component={CardPage}/>
-              <Route path="*" render={() => (<h1>Not Found</h1>)}/>,
-            </Switch>
-          </HashRouter>
+          <ConnectedRouter history={history}>
+            <Routes/>
+          </ConnectedRouter>
         </Provider>
       </div>
     </div>
