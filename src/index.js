@@ -1,62 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types'
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Button} from "reactstrap"
-
-class ProductsPage extends React.Component {
-  static defaultProps = {
-    available: 10,
-    oncard: 0,
-    status: "POSSIBLE"
-  }
-  
-  constructor(props) {
-    super(props)
-    this.state = {...props}
-    this.onBuyProduct = this.onBuyProduct.bind(this)
-  }
-  
-  onBuyProduct() {
-    let newState = {}
-    if (this.state.available > 0) {
-      newState = {
-        oncard: this.state.oncard + 1,
-        available: this.state.available - 1
-      }
-    } else {
-      newState = { status: "NO PRODUCTS" }
-    }
-    
-    this.setState(newState)
-  }
-  
-  render() {
-    return (
-      <div className="page page-products">
-        <h2>Products Store | <small>Available: {this.state.available}</small></h2>
-        <hr/>
-        <Button onClick={this.onBuyProduct}>Buy product</Button>
-        <div><small>Added: {this.state.oncard}</small></div>
-        <hr/>
-        <h6>Status: {this.state.status}</h6>
-      </div>
-    )
-  }
-}
-
-ProductsPage.propTypes = {
-  oncard: PropTypes.number.isRequired,
-  available: PropTypes.number.isRequired,
-  status: PropTypes.string,
-}
+import {HashRouter, Route, Switch} from "react-router-dom"
+import {Provider} from "react-redux"
+import store from "./redux/store"
+import ProductsPage from "./components/ProductsPage"
+import CardPage from "./components/CardPage"
+import AnotherComponent from "./components/AnotherComponent"
 
 const App = () => {
   return (
     <div className="content">
       <div className="container">
-        <ProductsPage available={20}/>
+        <Provider store={store}>
+          <HashRouter>
+            <Switch>
+              <Route exact path="/" render={() =>
+                <React.Fragment>
+                  <ProductsPage/>
+                  <AnotherComponent/>
+                </React.Fragment>
+              }/>
+              <Route path="/card" component={CardPage}/>
+              <Route path="*" render={() => (<h1>Not Found</h1>)}/>,
+            </Switch>
+          </HashRouter>
+        </Provider>
       </div>
     </div>
   )
