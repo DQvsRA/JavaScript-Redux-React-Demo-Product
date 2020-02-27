@@ -1,0 +1,2 @@
+export const STATUS_MODAL_HIDE_ALL = -1
+export const STATUS_MODAL_SHOW_DELETE_REQUEST = 1

@@ -1,4 +1,4 @@
-import categories from '../mocks/categories';
+import categories from './mocks/categories';
 
 class CategoryApi {
   getCategories = () => {
