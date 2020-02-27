@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button} from "reactstrap"
+import {HashRouter, Link, Route, Switch} from "react-router-dom"
 
 const QUANTITY_TO_BUY = 1
 
@@ -37,6 +38,7 @@ class ProductsPage extends React.Component {
     return (
       <div className="page page-products">
         <h2>Products Store | <small>Available: {this.state.available}</small></h2>
+        <Link to="/card">Go to card</Link>
         <hr/>
         <Button onClick={this.onBuyProduct}>Buy product</Button>
         <div><small>Added: {this.state.oncard}</small></div>
@@ -53,11 +55,38 @@ ProductsPage.propTypes = {
   status: PropTypes.string,
 }
 
+class CardPage extends React.Component {
+  render() {
+    return (
+      <div className="page page-card">
+        <h2>Card</h2>
+        <p>Products to buy amount: ?</p>
+        <Link to="/">Go back</Link>
+      </div>
+    )
+  }
+}
+
+const AnotherComponent = (props) => {
+  return <h3>Another component: {"?"}</h3>
+}
+
 const App = () => {
   return (
     <div className="content">
       <div className="container">
-        <ProductsPage available={5}/>
+        <HashRouter>
+          <Switch>
+            <Route exact path="/" render={() =>
+              <React.Fragment>
+                <ProductsPage/>
+                <AnotherComponent/>
+              </React.Fragment>
+            }/>
+            <Route path="/card" component={CardPage}/>
+            <Route path="*" render={() => (<h1>Not Found</h1>)}/>,
+          </Switch>
+        </HashRouter>
       </div>
     </div>
   )
