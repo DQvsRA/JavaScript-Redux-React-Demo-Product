@@ -5,6 +5,8 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button} from "reactstrap"
 
+const QUANTITY_TO_BUY = 1
+
 class ProductsPage extends React.Component {
   static defaultProps = {
     available: 10,
@@ -21,8 +23,8 @@ class ProductsPage extends React.Component {
   onBuyProduct() {
     if (this.state.available > 0) {
       let newState = {
-        oncard: this.state.oncard + 1,
-        available: this.state.available - 1
+        oncard: this.state.oncard + QUANTITY_TO_BUY,
+        available: this.state.available - QUANTITY_TO_BUY
       }
       if (newState.available === 0)
         newState.status = "NO PRODUCTS"
@@ -55,7 +57,7 @@ const App = () => {
   return (
     <div className="content">
       <div className="container">
-        <ProductsPage available={20}/>
+        <ProductsPage available={5}/>
       </div>
     </div>
   )
