@@ -21,6 +21,9 @@ import SelectedData from "./model/data/SelectedData"
 import CategoriesData from "./model/data/CategoriesData"
 import ModalsData from "./model/data/ModalsData"
 
+import {APPLICATION_LOAD_DATA} from "../const/Types"
+import {loadCategoriesData} from "./actions"
+
 const store = types
 	.model("store", {
 		status: types.optional(types.integer, STATUS_APPLICATION_NOT_READY),
@@ -100,14 +103,16 @@ const store = types
 				}
 			})
 		},
-		loadApplicationData: flow(function* () {
+		[APPLICATION_LOAD_DATA]: flow(function* () {
+			console.log("mbx > store: action -> APPLICATION_LOAD_DATA")
 			if (!self.isCategoriesDataReady)
 				yield self.loadCategories()
 			if (!self.isProductsDataReady)
 				yield self.loadProducts()
 		}),
 		loadCategories: flow(function* () {
-			yield self.categories.load()
+			// yield self.categories.load()
+			// self.dispatch(loadCategoriesData())
 			self.status = STATUS_CATEGORIES_DATA_READY
 		}),
 		loadProducts: flow(function* () {

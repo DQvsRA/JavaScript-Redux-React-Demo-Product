@@ -2,6 +2,7 @@ import {applySnapshot, flow, types} from "mobx-state-tree"
 import CategoryVO from "../vo/CategoryVO"
 import {STATUS_CATEGORIES_DATA_READY, STATUS_CATEGORIES_NO_DATA} from "../../../const/status/ApplicationStatus"
 import CategoriesLoader from "../../loader/CategoriesLoader"
+import {CATEGORIES_LOAD_DATA} from "../../../const/Types"
 
 const CategoriesData = types
 	.model('CategoriesData', {
@@ -16,7 +17,7 @@ const CategoriesData = types
 		}
 	}))
 	.actions(self => ({
-		load: flow(function* load() {
+		[CATEGORIES_LOAD_DATA]: flow(function* load() {
 			applySnapshot(self, {data: yield CategoriesLoader.fetch()})
 			self.status = STATUS_CATEGORIES_DATA_READY
 		})

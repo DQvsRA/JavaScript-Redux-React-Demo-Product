@@ -6,24 +6,26 @@ import {STATUS_MODAL_SHOW_DELETE_REQUEST} from "../../const/status/ModalsStatus"
 import ProductsNotReady from "./components/ProductsNotReady"
 import {ROUTE_PRODUCT, ROUTE_PRODUCT_ADD} from "../../const/Commons"
 import {observer, inject} from 'mobx-react'
+import {connect} from "react-redux"
+import * as ApplicationActions from "../../mobx/actions"
 
 class ProductsPage extends Component {
   componentDidMount() {
-    const {store} = this.props
-    store.loadApplicationData()
+    console.log("componentDidMount")
+    this.props.loadApplicationData()
   }
   
   render() {
-    const {store} = this.props
+    const {isReady} = this.props
     return (
       <Fragment>
         <Header name="Products List" route={ROUTE_PRODUCT + ROUTE_PRODUCT_ADD} navigation="Add Product"/>
         {
-          store.isApplicationDataReady
-            && <ProductsList list={store.products.list}/>
-            || <ProductsNotReady status={store.status}/>
+          isReady
+          //   && <ProductsList list={store.products.list}/>
+          //   || <ProductsNotReady status={store.status}/>
         }
-        {store.modals.status > 0 && renderModal(store.modals.status)}
+        {/*{store.modals.status > 0 && renderModal(store.modals.status)}*/}
       </Fragment>
   )
   }
@@ -37,4 +39,18 @@ function renderModal(status) {
   }
 }
 
-export default inject('store')(observer(ProductsPage))
+const mapStateToProps = state => {
+  return {
+    isReady: state.isApplicationDataReady,
+    status: state.status
+  }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  loadApplicationData: () => dispatch(ApplicationActions.loadApplicationData)
+  // actions: bindActionCreators(TodoActions, dispatch)
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductsPage)
+
+// export default inject('store')(observer(ProductsPage))

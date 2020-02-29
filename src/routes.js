@@ -10,7 +10,7 @@ export function getRoutes() {
     <HashRouter>
       <Switch>
         <Route exact path={ROUTE_HOME} component={ProductsPage}/>,
-        <Route path={ROUTE_PRODUCT + ":" + ROUTE_PRODUCT_PARAM_ID} component={ProductPage}/>,
+        {/*<Route path={ROUTE_PRODUCT + ":" + ROUTE_PRODUCT_PARAM_ID} component={ProductPage}/>,*/}
         <Route path="*" component={NotFoundPage}/>,
       </Switch>
     </HashRouter >
