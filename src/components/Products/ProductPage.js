@@ -24,7 +24,7 @@ class ProductPage extends Component {
 	}
 	
 	render() {
-		const {isReady, isChanged, product, status, errors, categories} = this.props
+		const {isReady, product, status } = this.props
 		
 		return (
 			<Fragment>
@@ -32,16 +32,7 @@ class ProductPage extends Component {
 				{
 					status === STATUS_PRODUCT_DATA_NO_PRODUCT
 						? <ProductsMissing product={product}/>
-						: isReady
-							? <ProductForm
-								errors={errors}
-								status={status}
-								product={product}
-								categories={categories}
-								isChanged={isChanged}
-								onSubmit={this.props.submitProductData}
-								onValidate={this.props.validateProductData}/>
-							: <Spinner/>
+						: isReady ? <ProductForm/> : <Spinner/>
 				}
 			</Fragment>
 		)
@@ -49,10 +40,7 @@ class ProductPage extends Component {
 }
 
 ProductPage.propTypes = {
-	product: PropTypes.object,
-	categories: PropTypes.array,
 	status: PropTypes.number,
-	isChanged: PropTypes.bool,
 	isReady: PropTypes.bool,
 }
 
@@ -60,11 +48,7 @@ const mapStateToProps = (state) => {
 	console.log("> mapStateToProps: ProductPage -> \n|\t state.product = ", state.product, "\n|\t state.categories =", state.categories)
 	
 	return {
-		categories: state.categories,
 		status: state.status.product,
-		product: state.product.data,
-		errors: state.product.errors,
-		isChanged: isProductChanged(state),
 		isReady: isProductDataReady(state)
 	}
 }
@@ -73,8 +57,6 @@ const mapDispatchToProps = dispatch => {
 	return {
 		resetProduct: () => dispatch(resetProduct()),
 		getProductById: id => dispatch(selectProduct(id)),
-		validateProductData: productFormData => dispatch(validateProductData(productFormData)),
-		submitProductData: productFormData => dispatch(submitProductData(productFormData)),
 	}
 }
 

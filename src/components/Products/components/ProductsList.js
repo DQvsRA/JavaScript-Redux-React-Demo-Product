@@ -15,7 +15,7 @@ const ProductsList = ({ data }) => {
         <Row key={index} className="mb-5">
           {row.map(product => (
             <Col className="products-product-card" sm={columnSize} key={product.id + product.key} >
-              <ProductCard product={product}/>
+              <ProductCard {...product}/>
             </Col>
           ))}
         </Row>

@@ -18,6 +18,11 @@ import {
 	RATING_TO_TRIGGER_AUTO_FEATURE
 } from "../../../const/Commons"
 import {STATUS_PRODUCT_DATA_READY_EDIT} from "../../../const/status/ProductStatus"
+import {expirationDateMax, formatDate} from "../../../utils/dateUtils"
+import {isProductChanged, isProductDataReady} from "../../../redux/reducers/status.reducers"
+import {resetProduct} from "../../../redux/types/product.types"
+import {selectProduct, submitProductData, validateProductData} from "../../../redux/actions/product.actions"
+import {connect} from "react-redux"
 
 const shortDateFormat = 'YYYY-MM-DD'
 
@@ -43,14 +48,14 @@ class ProductForm extends Component {
 	}
 
 	render() {
-		const {product, categories, errors, status, isChanged} = this.props
+		const {product, categories, errors, isEdit, isChanged} = this.props
 
 		const hasErrors = errors.length > 0
-
-		const receiptDate = product.receiptDate ? moment(product.receiptDate).format(shortDateFormat) : ''
-		const expirationDate = product.expirationDate ? moment(product.expirationDate).format(shortDateFormat) : ''
-		const expirationDateMax = moment().add(EXPIRATION_DATE_LIMIT, 'days').format(shortDateFormat)
-		const createdAt = product.createdAt ? moment(product.createdAt).format(shortDateFormat) : ''
+		
+		const receiptDate = formatDate(product.receiptDate, shortDateFormat)
+		const expirationDate = formatDate(product.expirationDate, shortDateFormat)
+		const dateMax = expirationDateMax(shortDateFormat)
+		const createdAt = formatDate(product.createdAt, shortDateFormat)
 
 		const leftColumn = 2
 		const rightColumn = 12 - leftColumn
@@ -128,7 +133,7 @@ class ProductForm extends Component {
 					<FormGroup row>
 						<Label for="expirationDate" sm={leftColumn}>Expiration Date:</Label>
 						<Col sm={rightColumn}>
-							<Input min={createdAt} defaultValue={expirationDate} max={expirationDateMax} id="expirationDate"
+							<Input min={createdAt} defaultValue={expirationDate} max={dateMax} id="expirationDate"
 										 type="date" name="expirationDate" placeholder="date"/>
 						</Col>
 					</FormGroup>
@@ -140,7 +145,7 @@ class ProductForm extends Component {
 						</Col>
 					</FormGroup>
 					<Button type="submit" disabled={hasErrors || !isChanged} color="info" outline size="lg"
-									block>{status === STATUS_PRODUCT_DATA_READY_EDIT ? "Save" : "Add"}</Button>
+									block>{isEdit ? "Save" : "Add"}</Button>
 				</Form>
 		)
 	}
@@ -148,12 +153,33 @@ class ProductForm extends Component {
 
 ProductForm.propTypes = {
 	errors: PropTypes.array.isRequired,
-	status: PropTypes.number.isRequired,
 	product: PropTypes.object.isRequired,
 	isChanged: PropTypes.bool.isRequired,
+	isEdit: PropTypes.bool.isRequired,
 	categories: PropTypes.array.isRequired,
 	onSubmit: PropTypes.func.isRequired,
 	onValidate: PropTypes.func.isRequired,
 }
 
-export default ProductForm
+
+const mapStateToProps = (state) => {
+	return {
+		errors: state.product.errors,
+		product: state.product.data,
+		isEdit: state.status.product === STATUS_PRODUCT_DATA_READY_EDIT,
+		isChanged: isProductChanged(state),
+		categories: state.categories,
+	}
+}
+
+const mapDispatchToProps = dispatch => {
+	return {
+		onValidate: productFormData => dispatch(validateProductData(productFormData)),
+		onSubmit: productFormData => dispatch(submitProductData(productFormData)),
+	}
+}
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(ProductForm)

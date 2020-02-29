@@ -1,40 +1,36 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Card, CardText, CardBody, CardTitle, ListGroup, ListGroupItem} from 'reactstrap'
-import moment from 'moment'
 import ProductActions from "./ProductActions"
+import {formatDate} from "../../../utils/dateUtils"
 
 const shortDateFormat = 'MM/DD/YYYY'
 const longDateFormat = 'MM/DD/YYYY hh:mm a'
 
-const ProductCard = ({ product, no_actions }) => {
-  const receiptDate =  product.receiptDate ? moment(product.receiptDate).format(shortDateFormat) : '-'
-  const expirationDate =  product.expirationDate ? moment(product.expirationDate).format(shortDateFormat) : '-'
-  const createdAt = product.createdAt ? moment(product.createdAt).format(longDateFormat) : '-'
-
+const ProductCard = (props) => {
   return (
     <Card>
       <CardBody>
-        <CardTitle><h5>{product.name}</h5></CardTitle>
+        <CardTitle><h5>{props.name}</h5></CardTitle>
         <CardText tag="div">
           <ListGroup>
-            <ListGroupItem>Brand: {product.brand}</ListGroupItem>
-            <ListGroupItem>Rating: {product.rating}</ListGroupItem>
-            <ListGroupItem>Featured: {product.featured ? 'Yes' : 'No'}</ListGroupItem>
-            <ListGroupItem>Items In Stock: {product.itemsInStock}</ListGroupItem>
+            <ListGroupItem>Brand: {props.brand}</ListGroupItem>
+            <ListGroupItem>Rating: {props.rating}</ListGroupItem>
+            <ListGroupItem>Featured: {props.featured ? 'Yes' : 'No'}</ListGroupItem>
+            <ListGroupItem>Items In Stock: {props.itemsInStock}</ListGroupItem>
             <ListGroupItem>
               Categories:
               <ul>
-                {product.categories.map(category => (
+                {props.categories.map(category => (
                   <li key={category.id}>{category.name}</li>
                 ))}
               </ul>
             </ListGroupItem>
-            <ListGroupItem>Receipt Date: {receiptDate}</ListGroupItem>
-            <ListGroupItem>Expiration Date: {expirationDate}</ListGroupItem>
-            <ListGroupItem>Created At: {createdAt}</ListGroupItem>
+            <ListGroupItem>Receipt Date: {formatDate(props.receiptDate, shortDateFormat)}</ListGroupItem>
+            <ListGroupItem>Expiration Date: {formatDate(props.expirationDate, shortDateFormat)}</ListGroupItem>
+            <ListGroupItem>Created At: {formatDate(props.createdAt, longDateFormat)}</ListGroupItem>
           </ListGroup>
-          {!no_actions && <ProductActions pid={product.id}/>}
+          {!props.no_actions && <ProductActions pid={props.id}/>}
         </CardText>
       </CardBody>
     </Card>
@@ -42,7 +38,7 @@ const ProductCard = ({ product, no_actions }) => {
 }
 
 ProductCard.propTypes = {
-  product: PropTypes.object.isRequired,
+  /* ProductVO destructed to props */
   no_actions: PropTypes.bool,
 }
 

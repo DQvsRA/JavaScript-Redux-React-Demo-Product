@@ -17,8 +17,7 @@ export function productReducers(state = productInitialState, action) {
     case PRODUCT_RESET:
       return { data: null, reference: null, errors: [] }
     case PRODUCT_SET:
-      const reference = action.isNew ? null : action.product
-      return {errors: [], data: new ProductVO(action.product), reference}
+      return {errors: [], data: new ProductVO(action.product), reference: action.product}
     default: return state
   }
 }
