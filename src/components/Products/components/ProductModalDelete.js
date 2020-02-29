@@ -1,12 +1,8 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
-import {connect} from "react-redux"
-import {cancelDeleteProduct, confirmDeleteProduct} from "../../../redux/actions/products.actions"
 import ProductCard from "./ProductCard"
-import {getCategoriesById} from "../../../redux/reducers/categories.reducers"
-import {setProductCategoriesNames} from "../../../redux/reducers/products.reducers"
+import {inject, observer} from "mobx-react"
 
 class ProductModalDelete extends Component {
 	constructor(props) {
@@ -35,23 +31,20 @@ class ProductModalDelete extends Component {
 	}
 	
 	onClosed() {
-		if (this.state.delete) {
-			this.props.confirmDeleteProduct()
-		} else {
-			this.props.cancelDeleteProduct()
-		}
+		const {store} = this.props
+		this.state.delete
+			&& store.confirmDeleteProduct()
+			|| store.cancelDeleteProduct()
 	}
 	
 	render() {
-		
-		const {product} = this.props
-		
+		const {store} = this.props
 		return (
 			<div>
 				<Modal isOpen={this.state.visible} onClosed={this.onClosed}>
 					<ModalHeader><b>Confirm delete product</b></ModalHeader>
 					<ModalBody>
-						<ProductCard product={product} no_actions={true}/>
+						<ProductCard id={store.selected.product.id} no_actions={true}/>
 					</ModalBody>
 					<ModalFooter>
 						<Button color="danger" onClick={this.onConfirm}>Confirm Delete</Button>{' '}
@@ -63,21 +56,4 @@ class ProductModalDelete extends Component {
 	}
 }
 
-ProductModalDelete.propTypes = {
-	product: PropTypes.object,
-}
-
-const mapStateToProps = (state) => {
-	const categoriesById = getCategoriesById(state.categories)
-	const product = setProductCategoriesNames(state.product.data, categoriesById)
-	return { product }
-}
-
-const mapDispatchToProps = dispatch => {
-	return {
-		confirmDeleteProduct: () => dispatch(confirmDeleteProduct()),
-		cancelDeleteProduct: () => dispatch(cancelDeleteProduct()),
-	}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProductModalDelete)
+export default inject('store')(observer(ProductModalDelete))

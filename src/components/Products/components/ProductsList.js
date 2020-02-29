@@ -5,19 +5,17 @@ import { Container, Row, Col } from 'reactstrap'
 import { chunk } from 'lodash'
 import {PRODUCT_LIST_ITEMS_IN_ROW} from "../../../const/Commons"
 
-const ProductsList = ({ data }) => {
-  const productsRows = chunk(data, PRODUCT_LIST_ITEMS_IN_ROW)
+const ProductsList = ({ list:listOfProductsIDs }) => {
+  const rows = chunk(listOfProductsIDs, PRODUCT_LIST_ITEMS_IN_ROW)
   const columnSize = Math.floor(12 / PRODUCT_LIST_ITEMS_IN_ROW)
-  
   return (
     <Container>
-      {productsRows.map((row, index) => (
+      {rows.map((row, index) => (
         <Row key={index} className="mb-5">
-          {row.map(product => (
-            <Col className="products-product-card" sm={columnSize} key={product.id + product.key} >
-              <ProductCard product={product}/>
-            </Col>
-          ))}
+          {row.map(pid => (
+            <Col className="products-product-card" sm={columnSize} key={pid}>
+              <ProductCard id={pid}/>
+            </Col>))}
         </Row>
       ))}
     </Container>
@@ -25,7 +23,7 @@ const ProductsList = ({ data }) => {
 }
 
 ProductsList.propTypes = {
-  data: PropTypes.array.isRequired,
+  list: PropTypes.array.isRequired,
 }
 
 export default ProductsList

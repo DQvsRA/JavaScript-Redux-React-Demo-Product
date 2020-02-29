@@ -1,26 +1,24 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { createStore, applyMiddleware } from 'redux'
 import ReactNotification from 'react-notifications-component'
-import { Provider } from 'react-redux'
-import thunk from 'redux-thunk'
-import { composeWithDevTools } from 'redux-devtools-extension'
+import { Provider } from 'mobx-react'
 import getRoutes from './routes'
-import reducers from "./redux/reducers"
-
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'react-notifications-component/dist/theme.css'
+import store from "./mobx/store"
+import makeInspectable from 'mobx-devtools-mst';
 
-const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk)))
+const mStore = store.create()
+makeInspectable(mStore);
 
 ReactDOM.render(
   <div>
     <ReactNotification />
     <div className="container">
-      <Provider store={store}>
-        {getRoutes()}
-      </Provider>
+        <Provider store={mStore}>
+          {getRoutes()}
+        </Provider>
     </div>
   </div>,
   document.getElementById('root')
