@@ -1,5 +1,5 @@
 export const RATING_MAX = 10
-export const NAME_MIN_CHARACTERS = 0
+export const NAME_MIN_CHARACTERS = 1
 export const NAME_MAX_CHARACTERS = 20
 export const RATING_TO_TRIGGER_AUTO_FEATURE = 8
 export const EXPIRATION_DATE_LIMIT = 30
@@ -14,5 +14,5 @@ export const ROUTE_PRODUCT = "/product/"
 export const ROUTE_PRODUCT_PARAM_ID = "id"
 export const ROUTE_PRODUCT_ADD = "add"
 
-export const DATE_FORMAT_SHORT = 'MM/DD/YYYY'
-export const DATE_FORMAT_LONG = 'MM/DD/YYYY hh:mm a'
+export const DATE_FORMAT_SHORT = "YYYY-MM-DD"
+export const DATE_FORMAT_LONG = 'YYYY-MM-DD / hh:mm a'

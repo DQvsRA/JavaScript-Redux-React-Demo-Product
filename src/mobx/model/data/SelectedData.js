@@ -50,7 +50,7 @@ const SelectedData = types
 		get isSavePossible() {
 			return self.hasErrors || !self.isChanged
 		},
-		get noProductData() {
+		get isProductMissing() {
 			return self.status === STATUS_PRODUCT_DATA_NO_PRODUCT
 		},
 		get isAutoFeatured() {
@@ -109,10 +109,10 @@ const SelectedData = types
 						self.product.rating = parseInt(value)
 						break
 					case "receiptDate":
-						if (value.length > 0) self.product.receiptDate = new Date(value).getTime()
+						if (value.length > 0) self.product.receiptDate = new Date(value).toDateString()
 						break
 					case "expirationDate":
-						if (value.length > 0) self.product.expirationDate = new Date(value).getTime()
+						if (value.length > 0) self.product.expirationDate = new Date(value).toDateString()
 						break
 					case "featured":
 						self.product.featured = value === "on"

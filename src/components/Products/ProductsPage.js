@@ -9,32 +9,45 @@ import {observer, inject} from 'mobx-react'
 
 class ProductsPage extends Component {
   componentDidMount() {
-    const {store} = this.props
-    store.loadApplicationData()
+    this.props.loadData()
   }
   
   render() {
-    const {store} = this.props
+    const {
+      isApplicationDataReady,
+      applicationStatus,
+      productsList,
+      showModal,
+      modal,
+    } = this.props
     return (
       <Fragment>
         <Header name="Products List" route={ROUTE_PRODUCT + ROUTE_PRODUCT_ADD} navigation="Add Product"/>
         {
-          store.isApplicationDataReady
-            && <ProductsList list={store.products.list}/>
-            || <ProductsNotReady status={store.status}/>
+          isApplicationDataReady
+            && <ProductsList list={productsList}/>
+            || <ProductsNotReady status={applicationStatus}/>
         }
-        {store.modals.status > 0 && renderModal(store.modals.status)}
+        {showModal && renderModal(modal)}
       </Fragment>
   )
   }
 }
 
-function renderModal(status) {
-  switch (status) {
+function renderModal(modal) {
+  switch (modal) {
     case STATUS_MODAL_SHOW_DELETE_REQUEST:
       return <ProductModalDelete/>
     default: return null
   }
 }
 
-export default inject('store')(observer(ProductsPage))
+export default inject(({store}) => ({
+  isApplicationDataReady: store.isApplicationDataReady,
+  applicationStatus: store.status,
+  productsList: store.products.data,
+  showModal: store.modals.showModal,
+  modal: store.modals.status,
+  /* actions */
+  loadData: store.loadApplicationData
+}))(observer(ProductsPage))

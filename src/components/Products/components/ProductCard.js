@@ -10,32 +10,29 @@ import {
 } from 'reactstrap'
 import ProductActions from "./ProductActions"
 import {inject} from "mobx-react"
+import { formatDate} from "../../../utils/dateFormatter"
+import {DATE_FORMAT_SHORT} from "../../../const/Commons"
 
 const ProductCard = (props) => {
-  
-  const {store, id, no_actions} = props
-  const product = store.getProductByID(id)
-  const categories = store.getProductCategoriesNames(product)
-  
   return (
     <Card>
       <CardBody>
-        <CardTitle><h5>{product.name}</h5></CardTitle>
+        <CardTitle><h5>{props.name}</h5></CardTitle>
         <CardText tag="div">
           <LG>
-            <LGI>Brand: {product.brand}</LGI>
-            <LGI>Rating: {product.rating}</LGI>
-            <LGI>Featured: {product.featured ? 'Yes' : 'No'}</LGI>
-            <LGI>Items In Stock: {product.itemsInStock}</LGI>
+            <LGI>Brand: {props.brand}</LGI>
+            <LGI>Rating: {props.rating}</LGI>
+            <LGI>Featured: {props.featured ? 'Yes' : 'No'}</LGI>
+            <LGI>Items In Stock: {props.itemsInStock}</LGI>
             <LGI>Categories:
-              <ul>{categories.map((category, index) =>
-                (<li key={index}>{category}</li>))}</ul>
+              <ul>{props.categories.map((category, index) =>
+                (<li key={index}>{props.categoriesNamesById[category]}</li>))}</ul>
             </LGI>
-            <LGI>Receipt Date: {store.getProductReceiptDate(product)}</LGI>
-            <LGI>Expiration Date: {store.getProductExpirationDate(product)}</LGI>
-            <LGI>Created At: {store.getProductCreatedDate(product)}</LGI>
+            <LGI>Receipt Date: {formatDate(props.receiptDate, DATE_FORMAT_SHORT)}</LGI>
+            <LGI>Expiration Date: {formatDate(props.expirationDate, DATE_FORMAT_SHORT)}</LGI>
+            <LGI>Created At: {formatDate(props.createdAt, DATE_FORMAT_SHORT)}</LGI>
           </LG>
-          {!no_actions && <ProductActions pid={product.id}/>}
+          {!props.no_actions && <ProductActions pid={props.id}/>}
         </CardText>
       </CardBody>
     </Card>
@@ -43,8 +40,11 @@ const ProductCard = (props) => {
 }
 
 ProductCard.propTypes = {
-  id: PropTypes.number.isRequired,
+  /* ProductVO destructed to props */
   no_actions: PropTypes.bool,
 }
 
-export default inject('store')(ProductCard)
+export default inject(({store}) => ({
+  categoriesNamesById: store.categories.sortedById,
+})
+)(ProductCard)

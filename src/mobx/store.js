@@ -21,6 +21,15 @@ import SelectedData from "./model/data/SelectedData"
 import CategoriesData from "./model/data/CategoriesData"
 import ModalsData from "./model/data/ModalsData"
 
+import { observer } from "mobx-react"
+
+export function components(fns) {
+	Object.keys(fns).forEach(key => {
+		fns[key] = observer(fns[key])
+	})
+	return fns
+}
+
 const store = types
 	.model("store", {
 		status: types.optional(types.integer, STATUS_APPLICATION_NOT_READY),
@@ -39,10 +48,6 @@ const store = types
 			return self.selected.status >= STATUS_PRODUCT_DATA_READY_EDIT
 				&& self.categories.status === STATUS_CATEGORIES_DATA_READY
 		},
-		getProductReceiptDate(product) { return product.receiptDate ? moment(product.receiptDate).format(DATE_FORMAT_SHORT) : '-' },
-		getProductExpirationDate(product) { return product.expirationDate ? moment(product.expirationDate).format(DATE_FORMAT_SHORT) : '-' },
-		getProductMaxExpirationDate() { return moment().add(EXPIRATION_DATE_LIMIT, 'days').format(DATE_FORMAT_SHORT) },
-		getProductCreatedDate(product) { return product.createdAt ? moment(product.createdAt).format(DATE_FORMAT_LONG) : '-' }
 	}))
 	.actions(self => ({
 		saveProduct: flow(function* (product) {

@@ -2,6 +2,7 @@ import {applySnapshot, flow, types} from "mobx-state-tree"
 import ProductVO from "../vo/ProductVO"
 import {STATUS_PRODUCTS_DATA_READY, STATUS_PRODUCTS_NO_DATA} from "../../../const/status/ApplicationStatus"
 import ProductsLoader from "../../loader/ProductsLoader"
+import {components} from "../../store";
 
 const ProductsData = types
 	.model('ProductsData', {
@@ -9,9 +10,10 @@ const ProductsData = types
 		status: types.optional(types.integer, STATUS_PRODUCTS_NO_DATA)
 	})
 	.views(self => ({
-		get list() {
-			return self.data.map(p => p.id)
-		},
+		get list() { return self.data.map(p => p.id) }
+	}))
+	.views(self => components({
+	
 	}))
 	.actions(self => ({
 		load: flow(function* () {

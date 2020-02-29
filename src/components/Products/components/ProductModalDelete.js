@@ -31,20 +31,18 @@ class ProductModalDelete extends Component {
 	}
 	
 	onClosed() {
-		const {store} = this.props
 		this.state.delete
-			&& store.confirmDeleteProduct()
-			|| store.cancelDeleteProduct()
+			&& this.props.onConfirm()
+			|| this.props.onCancel()
 	}
 	
 	render() {
-		const {store} = this.props
 		return (
 			<div>
 				<Modal isOpen={this.state.visible} onClosed={this.onClosed}>
 					<ModalHeader><b>Confirm delete product</b></ModalHeader>
 					<ModalBody>
-						<ProductCard id={store.selected.product.id} no_actions={true}/>
+						<ProductCard {...this.props.product} no_actions={true}/>
 					</ModalBody>
 					<ModalFooter>
 						<Button color="danger" onClick={this.onConfirm}>Confirm Delete</Button>{' '}
@@ -56,4 +54,9 @@ class ProductModalDelete extends Component {
 	}
 }
 
-export default inject('store')(observer(ProductModalDelete))
+export default inject(({store}) => ({
+	product: store.selected.product,
+	onCancel: store.cancelDeleteProduct,
+	onConfirm: store.confirmDeleteProduct
+}))
+(observer(ProductModalDelete))
