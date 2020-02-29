@@ -15,7 +15,11 @@
     "react-scripts": "3.0.1",
     "reactstrap": "^8.0.0",
     "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "mobx": "latest",
+    "mobx-react": "^5.0.0",
+    "mobx-state-tree": "latest",
+    "mst-middlewares": "^3.15.0"
   },
   "devDependencies": {
     "redux-devtools-extension": "^2.13.8"
