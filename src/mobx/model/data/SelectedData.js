@@ -87,35 +87,40 @@ const SelectedData = types
 		validateProductFormData: (formData) => {
 			let errors = []
 			let categories = []
+			const product = self.product
+			let wasFeatured = product.featured
+			let nowFeatured = false
+			
 			for (let pair of formData.entries()) {
+				console.log(pair)
 				let value = pair[1]
 				let key = pair[0]
 				switch (key) {
 					case "name":
 						if (value.length === NAME_MIN_CHARACTERS) errors.push(ERROR_PRODUCT_FORM_NAME_REQUIRED)
 						else if (value.length >= NAME_MAX_CHARACTERS) errors.push(ERROR_PRODUCT_FORM_NAME_EXCEED_LENGTH)
-						self.product.name = value
+						product.name = value
 						break
 					case "brand":
-						self.product.brand = value
+						product.brand = value
 						break
 					case "itemsInStock":
-						self.product.itemsInStock = parseInt(value) || 0
+						product.itemsInStock = parseInt(value) || 0
 						break
 					case "categories":
 						categories.push(parseInt(value))
 						break
 					case "rating":
-						self.product.rating = parseInt(value)
+						product.rating = parseInt(value)
 						break
 					case "receiptDate":
-						if (value.length > 0) self.product.receiptDate = new Date(value).toDateString()
+						if (value.length > 0) product.receiptDate = new Date(value).toDateString()
 						break
 					case "expirationDate":
-						if (value.length > 0) self.product.expirationDate = new Date(value).toDateString()
+						if (value.length > 0) product.expirationDate = new Date(value).toDateString()
 						break
 					case "featured":
-						self.product.featured = value === "on"
+						nowFeatured = value === "on"
 						break
 					default:
 				}
@@ -126,10 +131,12 @@ const SelectedData = types
 			} else if (categories.length > CATEGORIES_SELECTED_MAX) {
 				errors.push(ERROR_PRODUCT_FORM_CATEGORIES_MAX_REACHED)
 			} else {
-				self.product.categories = categories
+				product.categories = categories
 			}
 			
-			console.log("mbx > selected: validateProductData > \n|\t product =", self.product, "\n|\t errors =", errors)
+			product.featured = (wasFeatured && nowFeatured) || self.isAutoFeatured || nowFeatured
+			
+			console.log("mbx > selected: validateProductData > \n|\t product =", product, "\n|\t errors =", errors)
 			self.errors = errors
 		}
 	}))
