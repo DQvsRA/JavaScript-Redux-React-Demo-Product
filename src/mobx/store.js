@@ -78,12 +78,14 @@ const store = types
 			const product = isNew ? ProductVO.create({id: Math.max(...products.map(p => p.id + 1), 0)})
 				: products.find(p => p.id === productId) || ProductNotFoundVO.create({id: productId})
 			const productExist = getType(product) === ProductVO
+			
+			if (productExist && !self.isCategoriesDataReady)
+				yield self.loadCategories()
+			
 			self.selected.setup(product, isNew, routeId)
-			if (productExist) {
-				if (!self.isCategoriesDataReady)
-					yield self.loadCategories()
-			}
-			else self.selected.status = STATUS_PRODUCT_DATA_NO_PRODUCT
+			
+			if (!productExist)
+				self.selected.status = STATUS_PRODUCT_DATA_NO_PRODUCT
 			
 			console.log("mbx > selectProduct > \n|\t product =", product, "\n|\t isEditing =", isNew, "\n|\t productExist =", productExist, "\n|\t productId =", routeId, "\n|\t products.length =", products.length)
 		}),
