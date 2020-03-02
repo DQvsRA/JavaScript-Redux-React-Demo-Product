@@ -2,6 +2,9 @@ import {PRODUCT_STORAGE_NAME, SAVED_PRODUCTS} from "../../const/storage/LocalSto
 import ProductVO from "../../vos/ProductVO"
 import {PRODUCTS_ADD_UPDATE, PRODUCTS_DELETE, PRODUCTS_RECEIVE} from "../types/products.types"
 import {showSuccessNotification} from "../../utils/notifications"
+import {selectProduct} from "../actions/product.actions"
+import {ROUTE_PRODUCT} from "../../const/Commons"
+import {resetProduct} from "../types/product.types"
 
 export function productsReducers(state = [], action) {
   switch (action.type) {
@@ -10,6 +13,7 @@ export function productsReducers(state = [], action) {
       showSuccessNotification(`Product ${action.product.id} : ${action.product.name} deleted`)
       return newState
     case PRODUCTS_ADD_UPDATE:
+      console.log("PRODUCTS_ADD_UPDATE", action)
       if (action.isNew) {
         showSuccessNotification(`Product ${action.product.id} : ${action.product.name} added`)
         return productAdd(state, action.product)
@@ -85,6 +89,25 @@ function rearrangeAlreadyCreatedItems(created, added) {
     if (p.id < maxId) {
       p.id = maxId++
       ls.setItem(PRODUCT_STORAGE_NAME + p.key, JSON.stringify(p))
+    }
+  })
+}
+
+export const listenHistoryChangesOnRoute = (history, route) => (dispatch) => {
+  const unlisten = history.listen((location) => {
+    const path = location.pathname
+    if (path.indexOf(route) === 0) {
+      if (route === ROUTE_PRODUCT)
+      {
+        const routeId = path.split("/").pop()
+        dispatch(selectProduct(routeId))
+      }
+    } else {
+      if (route === ROUTE_PRODUCT)
+      {
+        dispatch(resetProduct())
+      }
+      unlisten()
     }
   })
 }

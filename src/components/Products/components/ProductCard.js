@@ -7,30 +7,30 @@ import {formatDate} from "../../../utils/dateUtils"
 const shortDateFormat = 'MM/DD/YYYY'
 const longDateFormat = 'MM/DD/YYYY hh:mm a'
 
-const ProductCard = (props) => {
+const ProductCard = ({product, no_actions}) => {
   return (
     <Card>
       <CardBody>
-        <CardTitle><h5>{props.name}</h5></CardTitle>
+        <CardTitle><h5>{product.name}</h5></CardTitle>
         <CardText tag="div">
           <ListGroup>
-            <ListGroupItem>Brand: {props.brand}</ListGroupItem>
-            <ListGroupItem>Rating: {props.rating}</ListGroupItem>
-            <ListGroupItem>Featured: {props.featured ? 'Yes' : 'No'}</ListGroupItem>
-            <ListGroupItem>Items In Stock: {props.itemsInStock}</ListGroupItem>
+            <ListGroupItem>Brand: {product.brand}</ListGroupItem>
+            <ListGroupItem>Rating: {product.rating}</ListGroupItem>
+            <ListGroupItem>Featured: {product.featured ? 'Yes' : 'No'}</ListGroupItem>
+            <ListGroupItem>Items In Stock: {product.itemsInStock}</ListGroupItem>
             <ListGroupItem>
               Categories:
               <ul>
-                {props.categories.map(category => (
+                {product.categories.map(category => (
                   <li key={category.id}>{category.name}</li>
                 ))}
               </ul>
             </ListGroupItem>
-            <ListGroupItem>Receipt Date: {formatDate(props.receiptDate, shortDateFormat)}</ListGroupItem>
-            <ListGroupItem>Expiration Date: {formatDate(props.expirationDate, shortDateFormat)}</ListGroupItem>
-            <ListGroupItem>Created At: {formatDate(props.createdAt, longDateFormat)}</ListGroupItem>
+            <ListGroupItem>Receipt Date: {formatDate(product.receiptDate, shortDateFormat)}</ListGroupItem>
+            <ListGroupItem>Expiration Date: {formatDate(product.expirationDate, shortDateFormat)}</ListGroupItem>
+            <ListGroupItem>Created At: {formatDate(product.createdAt, longDateFormat)}</ListGroupItem>
           </ListGroup>
-          {!props.no_actions && <ProductActions pid={props.id}/>}
+          {!no_actions && <ProductActions pid={product.id}/>}
         </CardText>
       </CardBody>
     </Card>
@@ -38,7 +38,7 @@ const ProductCard = (props) => {
 }
 
 ProductCard.propTypes = {
-  /* ProductVO destructed to props */
+  product: PropTypes.object.isRequired,
   no_actions: PropTypes.bool,
 }
 

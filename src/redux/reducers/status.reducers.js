@@ -52,6 +52,7 @@ export function statusReducers(state = initialStatusState, action) {
 			let noProduct = action.product instanceof ProductNotFoundVO
 			if (noProduct) showErrorNotification(`No product found with this ID: ${action.product.id}`)
 			else showInfoNotification(action.isNew ? "Ready to add new product" : "Product ready to be changed")
+			
 			return {...state, product: noProduct ? STATUS_PRODUCT_DATA_NO_PRODUCT : (action.isNew ? STATUS_PRODUCT_DATA_READY_ADD : STATUS_PRODUCT_DATA_READY_EDIT)}
 		
 		default:

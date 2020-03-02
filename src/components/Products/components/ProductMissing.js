@@ -1,17 +1,26 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Container } from 'reactstrap'
+import {connect} from "react-redux"
 
-const ProductsMissing = ({ product }) => {
+const ProductsMissing = ({ id }) => {
   return (
     <Container>
-      <h2>{"No product with id: " + product.id}</h2>
+      <h2>{"No product with id: " + id}</h2>
     </Container>
   )
 }
 
 ProductsMissing.propTypes = {
-  product: PropTypes.object.isRequired,
+  id: PropTypes.string.isRequired,
 }
 
-export default ProductsMissing
+const mapStateToProps = (state) => {
+  return {
+    id: state.product.data.id,
+  }
+}
+
+export default connect(
+  mapStateToProps
+)(ProductsMissing)

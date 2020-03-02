@@ -1,8 +1,7 @@
-export default class ProductNotFoundVO {
+import ProductVO from "./ProductVO"
 
-    id: Number
-
+export default class ProductNotFoundVO extends ProductVO{
     constructor(input) {
-        this.id = input ? input.id : 0
+        super(input)
     }
 }

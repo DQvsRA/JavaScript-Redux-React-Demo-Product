@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import {
 	Input, FormGroup, Label, Col, Form, Button, FormFeedback
 } from 'reactstrap'
-import moment from 'moment'
 import {
 	ERROR_PRODUCT_FORM_NAME_REQUIRED,
 	ERROR_PRODUCT_FORM_CATEGORIES_MAX_REACHED,
@@ -12,16 +11,15 @@ import {
 } from "../../../const/errors/ProductFormErrors"
 import {
 	CATEGORIES_SELECTED_MAX,
-	CATEGORIES_SELECTED_MIN, EXPIRATION_DATE_LIMIT,
+	CATEGORIES_SELECTED_MIN,
 	NAME_MAX_CHARACTERS, NAME_MIN_CHARACTERS,
 	RATING_MAX,
 	RATING_TO_TRIGGER_AUTO_FEATURE
 } from "../../../const/Commons"
 import {STATUS_PRODUCT_DATA_READY_EDIT} from "../../../const/status/ProductStatus"
 import {expirationDateMax, formatDate} from "../../../utils/dateUtils"
-import {isProductChanged, isProductDataReady} from "../../../redux/reducers/status.reducers"
-import {resetProduct} from "../../../redux/types/product.types"
-import {selectProduct, submitProductData, validateProductData} from "../../../redux/actions/product.actions"
+import {isProductChanged} from "../../../redux/reducers/status.reducers"
+import {submitProductData, validateProductData} from "../../../redux/actions/product.actions"
 import {connect} from "react-redux"
 
 const shortDateFormat = 'YYYY-MM-DD'
@@ -73,7 +71,7 @@ class ProductForm extends Component {
 		const MAX_NAME_CHAR = NAME_MIN_CHARACTERS + " required and not more than " + NAME_MAX_CHARACTERS + " characters"
 
 		return (
-				<Form autoComplete="off" ref="form" onSubmit={this.onSubmit} onChange={this.onChange}>
+				<Form key={product.id} autoComplete="off" ref="form" onSubmit={this.onSubmit} onChange={this.onChange}>
 					<FormGroup row>
 						<Label for="name" sm={leftColumn}>Name:</Label>
 						<Col sm={rightColumn}>

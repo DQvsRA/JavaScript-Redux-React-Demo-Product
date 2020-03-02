@@ -40,10 +40,11 @@ function assignProduct(isNew, routeId, dispatch, state) {
 	const productExist = product instanceof ProductVO
 	console.log("> action: product -> selectProduct > \n|\t product =", product, "\n|\t isNew =", isNew, "\n|\t productId =", routeId, "\n|\t products.length =", products.length)
 	
-	dispatch(setProduct(product, isNew))
 	if (productExist && !isCategoriesDataReady(state)) {
-		dispatch(fetchCategories())
-	}
+		dispatch(fetchCategories(() => {
+			dispatch(setProduct(product, isNew))
+		}))
+	} else dispatch(setProduct(product, isNew))
 }
 
 export const submitProductData = (productFormData) => (dispatch, getState) => {
