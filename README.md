@@ -2,6 +2,14 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## TASK
 
+Branches:
+- result-redux - Final implementation of all step below using Redux
+- result-mobx-mst - Final implementation with MST (Mobx-State-Tree)
+- demo-begins - Product Counter demo app - starting point, clean React (state and props)
+- demo-results - Product Counter demo app - Redux version
+- demo-results-items-to-buy - Product Counter demo app - more complex Redux multi-component version with router (to demonstrate shared state across multiple components)
+- demo-results-items-to-buy-mobx - Same as above but with Mobx - WIP
+
 Extend the initial application with the following functionality:
 - Implement create product form
 - Implement update product form
